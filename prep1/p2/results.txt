@@ -1,0 +1,7 @@
+Squares: 1
+4
+9
+16
+25
+Total: 55
+Average: 3

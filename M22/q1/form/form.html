@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Add Book</title>
+<script src=""></script>
+</head>
+<body>
+  <h1>Add New Book</h1>
+  <form id="bookForm" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name"><br><br>
+    <label for="author">Author:</label>
+    <input type="text" id="author" name="author"><br><br>
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price"><br><br>
+    <button type="submit">Add Book</button>
+  </form>
+  <script>
+    $(document).ready(function() {
+      $('#bookForm').submit(function(event) {
+        event.preventDefault();
+
+        
+
+        $.ajax({
+          url: 'http://localhost:3000/books',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(data),
+          success: function(book) {
+            console.log(book); // Handle the response
+          },
+          error: function(error) {
+            console.error(error); // Handle any errors
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

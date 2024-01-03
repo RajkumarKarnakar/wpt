@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seminar Registration Form</title>
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Custom CSS -->
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-control {
+            height: 40px;
+        }
+        .alert {
+            display: none;
+        }
+        .table {
+            margin-top: 20px;
+        }
+        .table td, .table th {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Seminar Registration Form</h1>
+        <form id="registration-form">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-email">Confirm Email</label>
+                <input type="email" class="form-control" id="confirm-email" name="confirm-email" placeholder="Confirm your email" required>
+            </div>
+            <div class="form-group">
+                <label for="seminar">Seminar</label>
+                <select class="form-control" id="seminar" name="seminar" required>
+                    <option value="" disabled selected>Select a seminar</option>
+                    <option value="SOA">SOA</option>
+                    <option value="Design Patterns">Design Patterns</option>
+                    <option value="Business Intelligence">Business Intelligence</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="level">Level</label>
+                <select class="form-control" id="level" name="level" required>
+                    <option value="" disabled selected>Select a level</option>
+                    <option value="Introductory">Introductory</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="cost">Cost of Training (In Rs)</label>
+                <input type="text" class="form-control" id="cost" name="cost" value="0" readonly>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            <button type="button" class="btn btn-secondary btn-block" id="display">Display All Details</button>
+        </form>
+        <div class="alert alert-success mt-3" role="alert">
+            All data entered correctly!
+        </div>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Seminar</th>
+                    <th>Level</th>
+                    <th>Cost</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!-- Dynamic rows will be added here -->
+            </tbody>
+        </table>
+    </div>
+    <!-- Custom JS -->
+    <script>
+        // Get the form element
+        var form = document.getElementById("registration-form");
+        // Get the input elements
+        var name = document.getElementById("name");
+        var email = document.getElementById("email");
+        var confirmEmail = document.getElementById("confirm-email");
+        var seminar = document.getElementById("seminar");
+        var level = document.getElementById("level");
+        var cost = document.getElementById("cost");
+        // Get the alert element
+        var alert = document.querySelector(".alert");
+        // Get the display button element
+        var display = document.getElementById("display");
+        // Get the table body element
+        var tableBody = document.getElementById("table-body");
+        // Define an array to store the participants' details
+        var participants = [];
+        // Define an object to store the cost of training for each seminar and level
+        var costOfTraining = {
+            "SOA": {
+                "Introductory": 2500,
+                "Intermediate": 3500,
+                "Advanced": 6000
+            },
+            "Design Patterns": {
+                "Introductory": 4000,
+                "Intermediate": 5500,
+                "Advanced": 8000
+            },
+            "Business Intelligence": {
+                "Introductory": 5000,
+                "Intermediate": 7000,
+                "Advanced": 10000
+            }
+        };
+
+
+
+
+$(document).ready(()=>{
+    
+})
+
+
+
+
+
+
+        // Add an event listener for form submission
+        form.addEventListener("submit", function(event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+            // Validate the input fields
+            if (validateForm()) {
+                // If all the data is valid, show the alert message
+                alert.style.display = "block";
+                // Create an object to store the current participant's details
+                var participant = {
+                    "name": name.value,
+                    "email": email.value,
+                    "seminar": seminar.value,
+                    "level": level.value,
+                    "cost": cost.value
+                };
+                // Push the object to the participants array
+                participants.push(participant);
+                // Reset the form fields
+                form.reset();
+                // Reset the cost value
+                cost.value = 0;
+            }
+        });
+        // Define a function to validate the form fields
+        function validateForm() {
+            // Check if the name field is empty
+            if (name.value == "") {
+                // If yes, show an error message and return false
+                alert("Please enter your name");
+                return false;
+            }
+            // Check if the email field is empty
+            if (email.value == "") {
+                // If yes, show an error message and return false
+                alert("Please enter your email");
+                return false;
+            }
+            // Check if the confirm email field is empty
+            if (confirmEmail.value == "") {
+                // If yes, show an error message and return false
+                alert("Please confirm your email");
+                return false;
+            }
+            // Check if the email and confirm email fields have the same value
+            if (email.value != confirmEmail.value) {
+                // If not, show an error message and return false
+                alert("Email and confirm email do not match");
+                return false;
+            }
+            // Check if the email field has a valid email format
+            if (!validateEmail(email.value)) {
+                // If not, show an error message and return false
+                alert("Please enter a valid email");
+                return false;
+            }
+            // Check if the seminar field has a value
+            if (seminar.value == "") {
+                // If not, show an error message and return false
+                alert("Please select a seminar");
+                return false;
+            }
+            // Check if the level field has a value
+            if (level.value == "") {
+                // If not, show an error message and return false
+                alert("Please select a level");
+                return false;
+            }
+            // If all the validations pass, return true
+            return true;
+        }
+        // Define a function to validate the email format using a regular expression
+        function validateEmail(email) {
+            // Define the regular expression for email format
+            var regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            // Test the email against the regular expression and return the result
+            return regex.test(email);
+        }
+        // Add an event listener for the seminar field change
+        seminar.addEventListener("change", function() {
+            // Get the selected seminar value
+            var selectedSeminar = seminar.value;
+            // Get the selected level value
+            var selectedLevel = level.value;
+            // Check if both the seminar and level fields have values
+            if (selectedSeminar != "" && selectedLevel != "") {
+                // If yes, update the cost value based on the cost of training object
+                cost.value = costOfTraining[selectedSeminar][selectedLevel];
+            }
+        });
+        // Add an event listener for the level field change
+        level.addEventListener("change", function() {
+            // Get the selected seminar value
+            var selectedSeminar = seminar.value;
+            // Get the selected level value
+            var selectedLevel = level.value;
+            // Check if both the seminar and level fields have values
+            if (selectedSeminar != "" && selectedLevel != "") {
+                // If yes, update the cost value based on the cost of training object
+                cost.value = costOfTraining[selectedSeminar][selectedLevel];
+            }})
+
+            // Add an event listener for the display button
+display.addEventListener("click", function() {
+    // Create a new window
+    var newWindow = window.open("", "Participants Details", "width=600,height=400");
+    // Write the HTML content for the new window
+    newWindow.document.write("<html><head><title>Participants Details</title></head><body>");
+    newWindow.document.write("<h1>Participants Details</h1>");
+    newWindow.document.write("<table border='1'><tr><th>Name</th><th>Email</th><th>Seminar</th><th>Level</th><th>Cost</th></tr>");
+    // Loop through the participants array and create table rows for each one
+    for (var i = 0; i < participants.length; i++) {
+        newWindow.document.write("<tr><td>" + participants[i].name + "</td><td>" + participants[i].email + "</td><td>" + participants[i].seminar + "</td><td>" + participants[i].level + "</td><td>" + participants[i].cost + "</td></tr>");
+    }
+    newWindow.document.write("</table></body></html>");
+});
