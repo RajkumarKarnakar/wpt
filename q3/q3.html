@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Button and Div Demo</title>
+<script src="./jquery.txt"></script>
+<style>
+#myButton {
+  position: relative;
+}
+#myDiv {
+  display: none;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background-color: #f0f0f0;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+</style>
+</head>
+<body>
+  <button id="myButton">Click me</button>
+  <div id="myDiv">This is the hidden div</div>
+  <script>
+    $(document).ready(function() {
+      $("#myButton").click(function() {
+        $("#myDiv").show();
+      });
+
+      $("#myDiv").hover(function() {
+        $(this).css("right", "auto").css("top", "100%");
+      }, function() {
+        $(this).css("right", "0").css("top", "50%");
+      });
+    });
+  </script>
+</body>
+</html>
